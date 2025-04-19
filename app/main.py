@@ -1,17 +1,19 @@
 from fastapi import FastAPI, Request, Form
 from fastapi.responses import HTMLResponse
-from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from datetime import datetime
 
 app = FastAPI()
 
-# Setup templates
 templates = Jinja2Templates(directory="templates")
 
 @app.get("/", response_class=HTMLResponse)
 async def age_form(request: Request):
-    return templates.TemplateResponse("index.html", {"request": request})
+    # Initialize age as None for GET requests
+    return templates.TemplateResponse(
+        "index.html", 
+        {"request": request, "age": None, "birthdate": None}
+    )
 
 @app.post("/", response_class=HTMLResponse)
 async def calculate_age(
